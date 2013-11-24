@@ -1,46 +1,20 @@
 function genome = create_genome(instance1, instance2)
+    part_r = create_genome_part(instance1.r, instance2.r);
+    part_g = create_genome_part(instance1.g, instance2.g);
+    part_b = create_genome_part(instance1.b, instance2.b);
+    s = [1 1 1];
 
-    r1 = instance1.r;
-    r2 = instance2.r;
-    
-    b = min(r1, r2);
-    c = max(r1, r2);
-    a = b - abs(r1 - r2) / 2;
-    d = c + abs(r1 - r2) / 2;
-    delta1 = b - a;
-    delta2 = c - b;
-    delta3 = d - c;
-    
-    r = [a, delta1, delta2, delta3];
-    genome = r
+    genome = [part_r part_g part_b s];
+end
 
-    g1 = instance1.g;
-    g2 = instance2.g;
-    
-    b = min(g1, g2);
-    c = max(g1, g2);
-    a = b - abs(g1 - g2) / 2;
-    d = c + abs(g1 - g2) / 2;
+function part = create_genome_part(attribute1, attribute2)
+    b = min(attribute1, attribute2);
+    c = max(attribute1, attribute2);
+    a = b - abs(attribute1 - attribute2) / 2;
+    d = c + abs(attribute1 - attribute2) / 2;
     delta1 = b - a;
     delta2 = c - b;
     delta3 = d - c;
     
-    g = [a, delta1, delta2, delta3];
-    genome = [genome g]
-    
-    b1 = instance1.g;
-    b2 = instance2.g;
-    
-    b = min(b1, b2);
-    c = max(b1, b2);
-    a = b - abs(b1 - b2) / 2;
-    d = c + abs(b1 - b2) / 2;
-    delta1 = b - a;
-    delta2 = c - b;
-    delta3 = d - c;
-    
-    b = [a, delta1, delta2, delta3];
-    genome = [genome b]
-    
-    genome = [genome 1 1 1]
+    part = [a, delta1, delta2, delta3];
 end
