@@ -31,5 +31,24 @@ function result = ga_fitness_function(genome, training_set)
     kcov = 0.8;
     f2 = 1 * (n > kcov) + (n/kcov) * (n <= kcov);
     
-    result = f1 * f2;
+    % consistencia requer que a regra cubra varias instancias corretas e um
+    % pequeno grupo de incorretas. A avaliacao da k-consistencia de uma
+    % regra e definida pela razao destes numeros.
+    % k ([0, 1]) determina a tolerancia maxima para o erro cometido por uma
+    % regra (individualmente).
+    n_plus = sum(w_matches .* mu_matches);
+    n_minus = sum(w_nomatches .* mu_nomatches);
+    k = 2;
+    f3 = 0 * (n_plus * k < n_minus) + ((n_plus - (n_minus / k)) / n_plus) * (n_plus * k >= n_minus);
+    
+    % para problemas com multiplas classes existe ainda um segundo criterio
+    % de consistencia baseado no numero de instancias correta e
+    % incorretamente classificadas sem considerar seus pesos. Isto porque
+    % regras geradas em estagios avancados fazem generalizacoes incorretas
+    % baseadas nas poucas instancias remanescentes com altos pesos.
+    m_plus = sum(mu_matches);
+    m_minus = sum(mu_nomatches);
+    f4 = 0 * (m_plus < m_minus) + ((m_plus - m_minus) / m_plus) * (m_plus >= m_minus);
+    
+    result = f1 * f2 * f3 * f4;
 end
