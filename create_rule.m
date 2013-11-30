@@ -1,7 +1,7 @@
 function rule = create_rule(genome, training_set)
     A = genome(1:12);
     S = genome(13:15);
-    rule = struct('A', A, 'S', S, 'mf', get_parameters(A), 'mu', @(set) mu(A, S, set), 'class', rule_class(A, S, training_set));
+    rule = struct('A', A, 'S', S, 'mf', get_parameters(A), 'mu', @(set) mu(A, S, set), 'class', rule_class(A, S, training_set), 'error', inf);
 end
 
 function result = rule_class(A, S, training_set)
@@ -15,7 +15,6 @@ function result = rule_class(A, S, training_set)
     % instancias desta classe
     for i = 1 : numel(classes);
         positions = find([training_set(:).class] == i);
-        mu_training_set(positions);
         classes(i) = sum(mu_training_set(positions));
     end
     
