@@ -8,7 +8,7 @@ function result = ga_fitness_function(genome, training_set)
     
     % encontra os pesos das instancias de treinamento classificadas (ou nao) como a
     % regra
-    w = [training_set(:).w];
+    w = [training_set(:).w]';
     w_matches = [training_set(training_set_class_rule_matches).w]';
     w_nomatches = [training_set(training_set_class_rule_nomatches).w]';
     
