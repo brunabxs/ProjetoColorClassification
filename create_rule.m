@@ -1,6 +1,8 @@
 function rule = create_rule(genome, training_set)
-    A = genome(1:12);
-    S = genome(13:15);
+    attributes_size = numel(genome) / 5;
+    A = genome(1 : 4*attributes_size);
+    S = genome(4*attributes_size+1 : 5*attributes_size);
+    
     rule = struct('A', A, 'S', S, 'mf', get_parameters(A), 'mu', @(set) mu(A, S, set), 'class', rule_class(A, S, training_set), 'error', inf);
 end
 
@@ -24,11 +26,12 @@ function result = rule_class(A, S, training_set)
 end
 
 function result = mu(A, S, set)
-    A1 = A(1:4);
-    A2 = A(5:8);
-    A3 = A(9:12);
-    
-    result = arrayfun(@(instance) min([eval(instance.r, A1), eval(instance.g, A2), eval(instance.b, A3)]), set);
+    attributes_size = numel(A) / 4;
+    result = arrayfun(@(instance) min(arrayfun(@(i) eval(instance.attributes(i), get_function(A, i)), 1 : attributes_size)), set);
+end
+
+function result = get_function(A, i)
+    result = A((i-1)*4 + 1 : i*4);
 end
 
 function result = eval(attribute, A)

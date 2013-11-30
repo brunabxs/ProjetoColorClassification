@@ -18,12 +18,13 @@ function population = ga_creation_function(genome_length, fitness_function, opti
 end
 
 function genome = create_genome(instance1, instance2)
-    part_r = create_genome_part(instance1.r, instance2.r);
-    part_g = create_genome_part(instance1.g, instance2.g);
-    part_b = create_genome_part(instance1.b, instance2.b);
-    s = [1 1 1];
-
-    genome = [part_r part_g part_b s];
+    attributes = [instance1.attributes; instance2.attributes];
+    s = ones(1, size(attributes, 2));
+    genome = [ones(1, 4 * size(attributes, 2)) s];
+    
+    for i = 1 : size(attributes, 2)
+        genome(1, (i-1)*4 + 1 : (i-1)*4 + 4) = create_genome_part(attributes(1, i), attributes(2, i));
+    end
 end
 
 function part = create_genome_part(attribute1, attribute2)
